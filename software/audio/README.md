@@ -17,7 +17,7 @@ Python side: `software/micropython/kagura/music.py` (frozen) has `AudioSession`,
 
 ## Hardware (what the HAL drives)
 
-From [the audio spec](../../docs/audio-spec.md), unchanged (no RTL changes):
+From [the audio spec](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/audio-spec.md), unchanged (no RTL changes):
 
 - Six voices: pulse 0..2 (8-bit duty), noise 3 (15-bit LFSR, 16-bit period), wave 4..5 (signed 8-bit, 32/64/128/256 samples).
 - 24-bit phase step, 48 kHz.

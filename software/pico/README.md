@@ -1,12 +1,12 @@
 # Pico host firmware（SPI / QSPI）
 
-Raspberry Pi Pico（RP2040、機材H1）からTang Nano 9KのSPI/QSPI bitstreamを操作する診断firmwareとVRAM uploader。[ホスト仕様](../../docs/host-interface.md)のトランザクションを、PIOで10MHz以下のmode 0として実装する。レジスタ定数は生成ヘッダ[`kagura_regs.h`](../include/kagura_regs.h)を使う。既定のboardは`pico`。Pico Wでも`-DPICO_BOARD=pico_w`で同じ配線のまま使える（無線機能とGP23〜25・29は使わない）。
+Raspberry Pi Pico（RP2040、機材H1）からTang Nano 9KのSPI/QSPI bitstreamを操作する診断firmwareとVRAM uploader。[ホスト仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/host-interface.md)のトランザクションを、PIOで10MHz以下のmode 0として実装する。レジスタ定数は生成ヘッダ[`kagura_regs.h`](../include/kagura_regs.h)を使う。既定のboardは`pico`。Pico Wでも`-DPICO_BOARD=pico_w`で同じ配線のまま使える（無線機能とGP23〜25・29は使わない）。
 
 SPI/QSPIとも5MHzで全診断に合格している（記録は「実機確認の手順」）。PSRAM版のbitstreamでは`psram`・`copy`・`pcm`・`stress`も使える。
 
 ## 配線
 
-両基板とも3.3V I/O。電源は各自のUSBから取り、**GNDだけを共通**にする（3V3/5V同士は接続しない）。配線は短く（目安15cm以内）、GNDを2本以上つなぐ。FPGAピンは[ピン一覧](../../boards/tang-nano-9k/pin-inventory.csv)のSPI/QSPI割当て。RGB/SPI LCDは接続しない。TFカードの4本（pin 36〜39、J5-1〜4）はSPI/QSPI bitstreamではHi-Z（pull無し）で、Picoから直接アクセスするために空けてある（この診断firmwareはTFカードを使わない）。
+両基板とも3.3V I/O。電源は各自のUSBから取り、**GNDだけを共通**にする（3V3/5V同士は接続しない）。配線は短く（目安15cm以内）、GNDを2本以上つなぐ。FPGAピンは[ピン一覧](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/boards/tang-nano-9k/pin-inventory.csv)のSPI/QSPI割当て。RGB/SPI LCDは接続しない。TFカードの4本（pin 36〜39、J5-1〜4）はSPI/QSPI bitstreamではHi-Z（pull無し）で、Picoから直接アクセスするために空けてある（この診断firmwareはTFカードを使わない）。
 
 | 信号 | Pico | Pico物理pin | Tang Nano 9K | ヘッダ | 備考 |
 |---|---|---:|---:|---|---|
@@ -21,11 +21,11 @@ SPI/QSPIとも5MHzで全診断に合格している（記録は「実機確認�
 | /IRQ | GP10 | 14 | 49 | J6-20 | open drain。4.7kΩでPico 3V3(OUT)（pin 36）へpull-up |
 | GND | GND | 3, 8, 13 | GND | J6-23 | 2本以上 |
 
-SPI/QSPIで配線は同じ。bitstreamは`tools/build-nano9k.tcl spi`・`qspi`・`spipsram`・`qspipsram`（[ビルドガイド](../../docs/build-and-test.md)）で作り、firmwareの`mode`を一致させる。
+SPI/QSPIで配線は同じ。bitstreamは`tools/build-nano9k.tcl spi`・`qspi`・`spipsram`・`qspipsram`（[ビルドガイド](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/build-and-test.md)）で作り、firmwareの`mode`を一致させる。
 
 ### ブレッドボードで組む場合
 
-- ブレッドボードに挿すのはPicoだけにし、Tang Nano 9Kはオス-メスのジャンパ線でヘッダへつなぐ。基板ごと挿すとTMDSのヘッダpin（J5-23/24、J6-12〜17）が接点列に触れて容量の付いたstubになり、HDMI出力を乱すおそれがある（[ピン一覧](../../boards/tang-nano-9k/pin-inventory.csv)は開放を指定）。
+- ブレッドボードに挿すのはPicoだけにし、Tang Nano 9Kはオス-メスのジャンパ線でヘッダへつなぐ。基板ごと挿すとTMDSのヘッダpin（J5-23/24、J6-12〜17）が接点列に触れて容量の付いたstubになり、HDMI出力を乱すおそれがある（[ピン一覧](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/boards/tang-nano-9k/pin-inventory.csv)は開放を指定）。
 - 接点容量とジャンパ線の長さで10MHzの成否が変わる。`div 10`（1MHz）から上げ、ブレッドボード構成で合格した最大値として記録する。
 - SCKはほかの信号線と束ねない。高い速度で失敗したら、まずオシロでSCKのリンギングを見る。改善しなければPico側のSCKに33Ω程度の直列抵抗を入れて比較する。
 - 電源レールにはPicoの3V3(OUT)だけを出し、/IRQのpull-upに使う。Tang Nano 9Kの3V3・5Vはレールへつながない。
@@ -158,7 +158,7 @@ uv run --with pillow --with numpy --with pyserial software/pico/send_image.py --
 3. 復帰: `diag`合格後にTang Nano 9KのS2（reset）を押し、READYが一度下がって戻ることを`info`で確認してから再度`diag`。Pico側のUSB再接続後も同様。
 4. uploader: 32KBのpattern全域を`-Verify`付きで転送し、CRC一致と転送速度を記録する。
 5. `abort`を実行し、header途中・data byte途中の両方が副作用なしで、その直後のID読出しまで合格することを確認する。
-6. 10MHzでオシロにより、SCK立上りに対するMISO（QSPIはIO）の変化時刻とt_CSSを測る（[ホスト仕様](../../docs/host-interface.md)の算定: FPGA出力は立上りから37〜56ns＋出力遅延）。
+6. 10MHzでオシロにより、SCK立上りに対するMISO（QSPIはIO）の変化時刻とt_CSSを測る（[ホスト仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/host-interface.md)の算定: FPGA出力は立上りから37〜56ns＋出力遅延）。
 
 | 日付 | bitstream（commit） | mode | 最大合格SCK | diag | 復帰 | uploader（KB/s） | 波形・備考 |
 |---|---|---|---|---|---|---|---|
@@ -177,4 +177,4 @@ uv run --with pillow --with numpy --with pyserial software/pico/send_image.py --
 - キューを消費するbyte（VRAM_WRITE、VRAM_READ_REQUEST、COMMAND）は、PIOがbyteの直前に`wait 0 gpio BUSY`する。BUSYの立上り・立下りをGPIO edge IRQで記録し、pulse回数とhigh時間を統計表示する。
 - QSPIはcount byteの最後の立下り直後にPIOがIOを解放し、/CS high中に次のトランザクション用に駆動へ戻す。
 - 待ちはすべてtimeout付き。BUSYで止まったbyteはSMを再起動して/CSを上げる（adapterは途中のbyteを捨てる）。結果が不明な操作を自動で再送しない。
-- `pico_sdk_import.cmake`はPico SDK 2.2.0の`external/`からの写し（BSD-3-Clause、[第三者IP方針](../../THIRD_PARTY.md)）。
+- `pico_sdk_import.cmake`はPico SDK 2.2.0の`external/`からの写し（BSD-3-Clause、[第三者IP方針](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/THIRD_PARTY.md)）。

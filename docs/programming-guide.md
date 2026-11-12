@@ -1,11 +1,11 @@
 # プログラミングガイド
 
-ホストからKAGURA-9を使う手順。規範は[レジスタ仕様](register-map.md)・[メモリマップ](memory-map.md)・[映像仕様](video.md)・[音源仕様](audio-spec.md)で、この文書は典型的な使い方をまとめる。
+ホストからKAGURA-9を使う手順。規範は[レジスタ仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/register-map.md)・[メモリマップ](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/memory-map.md)・[映像仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/video.md)・[音源仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/audio-spec.md)で、この文書は典型的な使い方をまとめる。
 
 ## 定数とライブラリ
 
 - C: [`software/include/kagura_regs.h`](../software/include/kagura_regs.h)。offsetは`KAGURA_REG_*`、EXT indexは`KAGURA_EXT_*`、bitはmask値。
-- ca65: [`software/w65c02/kagura_regs.inc`](../software/w65c02/kagura_regs.inc)。`.include`の前に`KAGURA_IO_BASE`を定義すると窓の位置を変えられる。`KAGURA_IO_*`が絶対address。
+- ca65: [`software/w65c02/kagura_regs.inc`](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/software/w65c02/kagura_regs.inc)。`.include`の前に`KAGURA_IO_BASE`を定義すると窓の位置を変えられる。`KAGURA_IO_*`が絶対address。
 - どちらも`spec/registers.json`から`tools/gen-registers.ps1`が生成する。手で編集しない。
 - Raspberry Pi Pico用のSPI/QSPIドライバ`software/pico/kagura_host.[ch]`（`kh_*`）が、以下の手順の実装例になる。
 - MicroPython: [`software/micropython/`](../software/micropython/README.md)。SPI/QSPI、映像・音源API、UART入力とHDMI REPL、`kagura_ja`によるREPL出力・アプリ画面の8×8日本語表示。Python定数も同じJSONから生成する。実機での検証範囲はリンク先を参照。
@@ -33,7 +33,7 @@ wr(VRAM_ADDR_L/M/H, addr)
 各byteについて: queueの空きを確認してから wr(VRAM_WRITE, b)
 ```
 
-- 1 byteが1 queue entry（32 entry）を使う。空きはFIFO_STATUS b5:0、SPIならheaderで返る値、SPI/QSPIならBUSYピンで確認する（[ホストインターフェース](host-interface.md#フロー制御)）。
+- 1 byteが1 queue entry（32 entry）を使う。空きはFIFO_STATUS b5:0、SPIならheaderで返る値、SPI/QSPIならBUSYピンで確認する（[ホストインターフェース](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/host-interface.md#フロー制御)）。
 - 拒否（FIFO_FULL等）されたbyteはaddressが進まないので、ERROR_CODEを読み、W1Cしてからそのbyteだけを再送する。結果が分からない操作をむやみに再送しない。
 - まとまった消去はFILL: `VRAM_ADDR`、`LENGTH`、`FILL_VALUE`を設定して`COMMAND=01`。範囲は1つの領域に収める。
 - 完了を待つにはFENCE: `FENCE_TAG=t`→`COMMAND=02`→`DONE_TAG==t`（またはIRQ.FENCE_DONE）。
@@ -62,7 +62,7 @@ paletteとDISPLAY_CTRL・scrollはCOMMITで初めて画面に出る。patternと
 
 ## 4. sprite
 
-sprite nのshadowは`0xA000 + n*8`の8 byte（[レコード形式](memory-map.md#sprite-8byteレコード)）。
+sprite nのshadowは`0xA000 + n*8`の8 byte（[レコード形式](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/memory-map.md#sprite-8byteレコード)）。
 
 ```text
 byte0 = x & 0xFF
@@ -165,7 +165,7 @@ PSRAMに置いたpattern・map・palette等をVRAMへ速く送れる（32KiBで�
 
 ## ABI 0.6：1,200パターン
 
-ABI 0.6のPATTERN_COUNTは1200（EXT 07=176、08=4）。タイル番号は0～1199を使用できる。背景は従来の16bit mapと別の上位bit表、spriteはbyte 5 bit6に11bit目を持つ。1200～2047は透明として描画する。公開アドレスとbit配置は[メモリマップ](memory-map.md)を参照。
+ABI 0.6のPATTERN_COUNTは1200（EXT 07=176、08=4）。タイル番号は0～1199を使用できる。背景は従来の16bit mapと別の上位bit表、spriteはbyte 5 bit6に11bit目を持つ。1200～2047は透明として描画する。公開アドレスとbit配置は[メモリマップ](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/memory-map.md)を参照。
 
 MicroPythonでは `Video.tile()`、`Video.sprite()`、`Video.map_entry()` が1199まで対応する。複数タイルは `Video.tiles(first, packed_pixels)` を使うと1023／1024の公開アドレス境界で転送を分割する。raw `write_memory(tile*32, ...)` は1024以上では使わない。
 

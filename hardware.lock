@@ -1,0 +1,8 @@
+# The siska-tech/kagura (hardware) commit this SDK is built against: the
+# generated register constants (software/include/kagura_regs.h,
+# software/micropython/kagura/regs.py) come from its spec/registers.json, and
+# links to the hardware documents point at it. Checked by
+# tools/check-hardware-lock.sh; update all three lines together.
+commit c6ae031cb7043171796e134d0dea9870f808206f
+registers.json-sha256 7bb4ad2f6389d8ff17aafe9e011b88e5791961af284d674ee9508cece5cd22aa
+abi 0.6

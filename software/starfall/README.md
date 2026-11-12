@@ -97,7 +97,7 @@ backendのmock試験も行い、VBlank・差分OAM・初期化時の表示停止
 場面別BGMは切替境界・10曲の差異・SFXの優先度・wave bank保持・終曲後の停止を検査する。
 現在は専用DEMO曲を含む10曲。状態遷移/40秒replay/START割込みとbossの個別部位/HP phaseも検査する。
 オプション同時レーザー、混雑時の全発射元表示、旧ラスタでの床混入再現と修正後の0件も検査する。
-関連する既存RTLの限定回帰は `bash software/starfall/test-rtl.sh`。
+関連する既存RTLの限定回帰（`software/starfall/test-rtl.sh`）はRTLと共に[siska-tech/kagura](https://github.com/siska-tech/kagura)にある。
 
 ホストの参照シンセで曲を順番に試聴するWAVを作る場合:
 

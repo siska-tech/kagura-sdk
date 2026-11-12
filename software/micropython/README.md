@@ -1,4 +1,4 @@
-> SDKはABI 0.6（1,200パターン）に対応します。[第3段階](../../docs/tile-1200-stage3.md)でPicoの全量読戻し・PCM併用1時間連続動作・文字キャッシュ1072枠を数値検証済み。`Video.tiles()` は1023／1024境界を分割し、BGとspriteの番号は1199まで対応します。更新手順とキャッシュの範囲は[プログラミングガイド](../../docs/programming-guide.md#abi-061200パターン)を参照。
+> SDKはABI 0.6（1,200パターン）に対応します。[第3段階](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/tile-1200-stage3.md)でPicoの全量読戻し・PCM併用1時間連続動作・文字キャッシュ1072枠を数値検証済み。`Video.tiles()` は1023／1024境界を分割し、BGとspriteの番号は1199まで対応します。更新手順とキャッシュの範囲は[プログラミングガイド](../../docs/programming-guide.md#abi-061200パターン)を参照。
 
 # MicroPython host driver / UART keyboard / HDMI REPL
 
@@ -220,7 +220,7 @@ text.flush()
 - 全文字を8×8の固定セルで扱う。ASCII・半角カナもセル1つを使い、字形はセル内で中央寄せされる。
 - `\n`で次の行の先頭、`\r`で行頭へ戻る。右端を越える文字は次の行へ折り返す。矩形外（負の位置を含む）のセルは描かず、タイルも使わない。
 - 未収録文字・BMP外の文字・その他の制御文字（タブを含む）は`?`で表示する。
-- 画素値1が指定paletteの色1、画素値0は透明でBACKDROPの色が見える（[映像仕様](../../docs/video.md)）。palette RAMの設定とそのCOMMITは呼出し側で行う。表示・BGの有効化もアプリ側の責任。
+- 画素値1が指定paletteの色1、画素値0は透明でBACKDROPの色が見える（[映像仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/video.md)）。palette RAMの設定とそのCOMMITは呼出し側で行う。表示・BGの有効化もアプリ側の責任。
 - 最初の`text()`の前に`clear()`が必要。転送エラーが起きた後も、`clear()`をやり直すまで`text()`は`RuntimeError`になる。
 
 ### 資源制約
@@ -287,7 +287,7 @@ MISAKI_ZIP=path/to/misaki_bdf_2021-05-05.zip \
 
 ### 実機の受入結果
 
-以下は拡張前ABI 0.5の過去の記録。ABI 0.6・1,200枚版は[第3段階の数値検証](../../docs/tile-1200-stage3.md)を参照。
+以下は拡張前ABI 0.5の過去の記録。ABI 0.6・1,200枚版は[第3段階の数値検証](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/tile-1200-stage3.md)を参照。
 
 2026-10-29、Pico（公式MicroPython v1.26.0 UF2＋`/lib/kagura/`、frozenなし）、Tang Nano 9K。bitstreamは`8aee28e`から作った[標準版release](https://github.com/siska-tech/kagura/releases/tag/bitstreams-2026-10-27)の`spi`・`spipsram`・`qspipsram`・`qspipsram720`をSRAMへ書いた。
 
@@ -448,7 +448,7 @@ framebuffer_demo.run(60, fb=fb)"
 
 ## 桜吹雪ストレスデモ（sakura）
 
-`examples/sakura.py`はPicoのC版`stress`（[桜吹雪ストレス試験](../../docs/validation-status.md)）のMicroPython版。夜の神楽の情景に256枚の花びらsprite、7段のラスタスクロール、毎フレームのPSRAM→VRAM COPYで動くオーロラ、PSRAMに置いたピアノ（PCM 2ch）、PSG 6声の伴奏と効果音を重ね、上2行に美咲フォントのHUD（更新fps、spriteオーバーフロー、PCMアンダーラン、PSRAM転送量、ERROR_CODE）、下端に日本語の電光掲示を流す。ABI 0.6のbitstreamと`kagura_ja`・`fonts/misaki8.kfnt`が必要。ピアノにはCAPS PSRAMと`examples/sakura_assets/piano_c4.pcm`（C版と同じ録音、72000 B）が要り、どちらかが無ければ旋律をPSGの正弦波で鳴らす。
+`examples/sakura.py`はPicoのC版`stress`（[桜吹雪ストレス試験](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/validation-status.md)）のMicroPython版。夜の神楽の情景に256枚の花びらsprite、7段のラスタスクロール、毎フレームのPSRAM→VRAM COPYで動くオーロラ、PSRAMに置いたピアノ（PCM 2ch）、PSG 6声の伴奏と効果音を重ね、上2行に美咲フォントのHUD（更新fps、spriteオーバーフロー、PCMアンダーラン、PSRAM転送量、ERROR_CODE）、下端に日本語の電光掲示を流す。ABI 0.6のbitstreamと`kagura_ja`・`fonts/misaki8.kfnt`が必要。ピアノにはCAPS PSRAMと`examples/sakura_assets/piano_c4.pcm`（C版と同じ録音、72000 B）が要り、どちらかが無ければ旋律をPSGの正弦波で鳴らす。
 
 ```sh
 mpremote connect COM5 fs cp -r kagura_ja :lib/

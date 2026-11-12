@@ -53,7 +53,7 @@ C言語で合成するGEM風のデスクトップです（[kagura-desktop](https
 
 ## 実機
 
-![ブレッドボード上のRaspberry Pi PicoとTang Nano 9K](images/hardware-pico-tang-nano-9k.jpg)
+![ブレッドボード上のRaspberry Pi PicoとTang Nano 9K](https://github.com/siska-tech/kagura/raw/c6ae031cb7043171796e134d0dea9870f808206f/docs/images/hardware-pico-tang-nano-9k.jpg)
 
 *Raspberry Pi Pico（SPI/QSPIホスト）とTang Nano 9K。配線は[Pico firmware](../software/pico/README.md)を参照。*
 

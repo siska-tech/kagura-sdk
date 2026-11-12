@@ -121,7 +121,7 @@ python tools/gen-star-runner-audio.py
 python tools/gen-star-runner-audio.py --output build/star-runner-audio --wav
 ```
 
-[音源仕様](../../../docs/audio-spec.md)とPCM制御RTLを確認し、PCMはsigned 8bit mono・48000Hz固定で生成しています。PSRAMの`0x400000..0x7FFFFF`に収め、サンプルごとに256byte境界で別領域を割り当てます。START含む／END含まない形式です。正確な配置・長さ・SHA256は`star_runner_assets/manifest.json`にあります。起動時に1024byteずつ転送し、全uploadのFENCE完了後にPREPAREします。準備／再生中のサンプル領域は書き換えません。
+[音源仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/audio-spec.md)とPCM制御RTLを確認し、PCMはsigned 8bit mono・48000Hz固定で生成しています。PSRAMの`0x400000..0x7FFFFF`に収め、サンプルごとに256byte境界で別領域を割り当てます。START含む／END含まない形式です。正確な配置・長さ・SHA256は`star_runner_assets/manifest.json`にあります。起動時に1024byteずつ転送し、全uploadのFENCE完了後にPREPAREします。準備／再生中のサンプル領域は書き換えません。
 
 BGMの開始に既存`Audio.prepare_pcm()`／`play_pcm()`を使用します。効果音のPREPAREだけは同じ公開レジスタ手順をアプリ側で分割し、次回serviceでREADYを確認してENABLEを設定します。これによりゲーム内でREADYをbusy waitしません。通信・APPLY待ちには既存ドライバのtimeoutを使い、分割PREPAREにも1秒のtimeoutがあります。ch1の効果音処理はch0のSTART／END／CONTROLへ書き込まず、ch0の再生位置を保ちます。
 

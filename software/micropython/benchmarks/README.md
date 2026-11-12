@@ -9,7 +9,7 @@
 - 旧版の`Game.step/draw`、ART／FONT、2声BGM、終了時のコンソール復旧。
 - 現行MicroPythonの`device.py`、DMA対応`transport_rp2.py`、`video.py`、`audio.py`、`console.py`。
 - [PR #30](https://github.com/siska-tech/kagura/pull/30)の本文、[ドライバ実機記録](../README.md#実機の受入結果)。PRはmainへmerge済み。
-- [映像仕様](../../../docs/video.md)、[音源仕様](../../../docs/audio-spec.md)、[メモリマップ](../../../docs/memory-map.md)、[PCM制御RTL](../../../rtl/audio/kagura_pcm_control.sv)。PCMは2ch、PSRAM signed 8bit、48kHz、START含む／END含まない形式。STOP／PREPARE／ACTIVE／sticky errorの扱いとwave bank交換を確認。
+- [映像仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/video.md)、[音源仕様](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/audio-spec.md)、[メモリマップ](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/docs/memory-map.md)、[PCM制御RTL](https://github.com/siska-tech/kagura/blob/c6ae031cb7043171796e134d0dea9870f808206f/rtl/audio/kagura_pcm_control.sv)。PCMは2ch、PSRAM signed 8bit、48kHz、START含む／END含まない形式。STOP／PREPARE／ACTIVE／sticky errorの扱いとwave bank交換を確認。
 
 PR #30にあるCOMMIT約60fps、scroll＋COMMIT 58〜59fps、64 records一括転送約29fps、個別`Video.sprite()`8回約15fpsは**ドライバ単体の参考値**です。今回のゲーム実測値と同じ試験ではありません。
 
